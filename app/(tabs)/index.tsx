@@ -14,6 +14,7 @@ import IconButton from "@/components/IconButton";
 import CircleButton from "@/components/CIrcleButton";
 import EmojiPicker from "@/components/EmojiPicker";
 import EmojiSticker from "@/components/EmojiSticker";
+// import { Snackbar } from "react-native-paper";
 
 const PlaceholderImage = require("@/assets/images/placeholder-image.png");
 const PlaceholderImage1 = require("@/assets/images/placeholder-image1.jpg");
@@ -28,6 +29,7 @@ export default function Index() {
   const imageRef = useRef(null);
 
   const [status, requestPermission] = MediaLibrary.usePermissions();
+  const [visible, setVisible] = useState(false);
 
   if (status === null) {
     requestPermission();
@@ -35,6 +37,8 @@ export default function Index() {
 
   const pickImageAsync = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4, 3],
       allowsEditing: true,
       quality: 1,
     });
@@ -43,6 +47,7 @@ export default function Index() {
       setShowAppOptions(true);
     } else {
       alert("You did not select any image.");
+      setVisible(true);
     }
   };
 
@@ -92,6 +97,7 @@ export default function Index() {
         <View ref={imageRef} collapsable={false} style={styles.imageContainer}>
           <ImageViewer
             imageScr={PlaceholderImage}
+            // imageScr={PlaceholderImage1}
             selectedImage={selectedImage}
             // width={Platform.OS === "web" ? 680 : undefined}
             // height={Platform.OS === "web" ? 560 : undefined}
@@ -143,6 +149,17 @@ export default function Index() {
         </EmojiPicker>
       </GestureHandlerRootView>
       <StatusBar style="light" />
+      {/* <Snackbar
+        visible={visible}
+        style={{ backgroundColor: "red" }}
+        onDismiss={() => setVisible(false)}
+        action={{
+          label: "OK",
+          onPress: () => setVisible(false),
+        }}
+      >
+        The image was saved to your camera roll!
+      </Snackbar> */}
     </>
   );
 }
@@ -203,7 +220,7 @@ const styles = StyleSheet.create({
   searchStyle: {
     backgroundColor: "#25292e",
     color: "#fff",
-    borderColor: '#fff',
+    borderColor: "#fff",
     paddingTop: 10,
   },
 });

@@ -1,19 +1,21 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Platform } from "react-native";
 
 const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#ffd33d",
+        tabBarInactiveTintColor: "#f5f5f5",
         headerStyle: {
           backgroundColor: "#25292e",
         },
         headerShadowVisible: false,
         headerTintColor: "#fff",
         tabBarStyle: {
-          height: 60,
+          height: Platform.OS === "web" ? 60 : 80,
+          paddingBottom: Platform.OS === "web" ? 0 : 25,
           backgroundColor: "#25292e",
         },
       }}
@@ -32,7 +34,7 @@ const TabsLayout = () => {
               />
               <Text
                 style={{
-                  color: focused ? "#ffd33d" : "rgb(142, 142, 143)",
+                  color: focused ? "#ffd33d" : "#f5f5f5",
                   fontSize: 14,
                   fontWeight: "bold",
                 }}
@@ -61,7 +63,7 @@ const TabsLayout = () => {
               />
               <Text
                 style={{
-                  color: focused ? "#ffd33d" : "rgb(142, 142, 143)",
+                  color: focused ? "#ffd33d" : "#f5f5f5",
                   fontSize: 14,
                   fontWeight: "bold",
                 }}

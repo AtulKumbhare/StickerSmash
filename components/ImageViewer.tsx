@@ -1,17 +1,17 @@
 import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+// const { width: screenWidth } = Dimensions.get("window");
 
 type Props = {
-  width?: number;
-  height?: number;
   imageScr: string;
   selectedImage: string | undefined;
 };
 
-const ImageViewer = ({ imageScr, selectedImage, width = 320, height = 440 }: Props) => {
+const ImageViewer = ({ imageScr, selectedImage }: Props) => {
   const imgSource = selectedImage ? { uri: selectedImage } : imageScr;
   return (
-    <Image source={imgSource} style={{ width, height, borderRadius: 18 }} />
+    <Image source={imgSource} style={styles.image} />
   );
 };
 export default ImageViewer;
