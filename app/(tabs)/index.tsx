@@ -7,6 +7,7 @@ import * as MediaLibrary from "expo-media-library";
 import { captureRef } from "react-native-view-shot";
 import domtoimage from "dom-to-image";
 import { StatusBar } from "expo-status-bar";
+import ToastManager, { Toast } from "toastify-react-native";
 
 import ImageViewer from "@/components/ImageViewer";
 import Button from "@/components/Button";
@@ -14,7 +15,6 @@ import IconButton from "@/components/IconButton";
 import CircleButton from "@/components/CIrcleButton";
 import EmojiPicker from "@/components/EmojiPicker";
 import EmojiSticker from "@/components/EmojiSticker";
-// import { Snackbar } from "react-native-paper";
 
 const PlaceholderImage = require("@/assets/images/placeholder-image.png");
 const PlaceholderImage1 = require("@/assets/images/placeholder-image1.jpg");
@@ -36,6 +36,7 @@ export default function Index() {
   }
 
   const pickImageAsync = async () => {
+    Toast.error("You did not select any image.");
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       aspect: [4, 3],
@@ -46,7 +47,8 @@ export default function Index() {
       setSelectedImage(result.assets[0].uri);
       setShowAppOptions(true);
     } else {
-      alert("You did not select any image.");
+      Toast.error("You did not select any image.");
+      // alert("You did not select any image.");
       setVisible(true);
     }
   };
@@ -72,6 +74,7 @@ export default function Index() {
         link.download = "sticker-smash.jpeg";
         link.href = localUri;
         link.click();
+        Toast.success("Saved!");
       } else {
         const localUri = await captureRef(imageRef, {
           height: 440,
@@ -79,7 +82,8 @@ export default function Index() {
         });
         await MediaLibrary.saveToLibraryAsync(localUri);
         if (localUri) {
-          alert("Saved!");
+          // alert("Saved!");
+          Toast.success("Image saved to library!");
         }
       }
     } catch (error) {
@@ -149,17 +153,7 @@ export default function Index() {
         </EmojiPicker>
       </GestureHandlerRootView>
       <StatusBar style="light" />
-      {/* <Snackbar
-        visible={visible}
-        style={{ backgroundColor: "red" }}
-        onDismiss={() => setVisible(false)}
-        action={{
-          label: "OK",
-          onPress: () => setVisible(false),
-        }}
-      >
-        The image was saved to your camera roll!
-      </Snackbar> */}
+      <ToastManager  duration={5000} height={68}  position="top" positionValue={-50} textStyle={{fontSize: 15}}/>
     </>
   );
 }
